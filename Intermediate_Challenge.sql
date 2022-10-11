@@ -12,9 +12,8 @@
   -- Returns first 100 rows from sqlchallenge1.sales_reps
   SELECT * FROM sqlchallenge1.sales_reps;
   
-  /*
-Which region has the lowest proportion of sales reps to accounts?
-*/
+
+-- 1. Which region has the lowest proportion of sales reps to accounts?
 
 SELECT 
   r.name as region_name, COUNT(s.id) as no_of_reps
@@ -28,10 +27,8 @@ ORDER BY no_of_reps DESC;
 
 
 
-/*
-Among sales reps Tia Amato, Delilah Krum and Soraya Fulton,
-which ones had accounts with the greatest total quantity ordered (not USD) in September 2016?
-*/
+
+-- 2. Among sales reps Tia Amato, Delilah Krum and Soraya Fulton, which ones had accounts with the greatest total quantity ordered (not USD) in September 2016?
 
 SELECT 
   s.name as name,
@@ -53,10 +50,8 @@ ORDER BY total_qty DESC;
 
 
 
-/*
-Of accounts served by sales reps in the Northeast, one account
-has NEVER bought any posters. Which one?
-*/
+-- 3. Of accounts served by sales reps in the Northeast, one account has NEVER bought any posters. Which one?
+
 
 SELECT 
     DISTINCT a.name as account_name,
@@ -76,9 +71,8 @@ HAVING SUM(o.poster_qty) <= 0;
   
 
 
-/*
-How many accounts have never ordered poster?
-*/
+-- 4. How many accounts have never ordered poster?
+
 
 SELECT 
   DISTINCT a.name as account_name,
@@ -92,9 +86,8 @@ HAVING SUM(o.poster_qty) = 0;
 
 
 
-/*
-What is the most common firstname for account primary pocs?
-*/
+-- 5. What is the most common firstname for account primary pocs?
+
 
 SELECT DISTINCT primary_poc as pocname, COUNT(primary_poc)
 FROM sqlchallenge1.accounts
