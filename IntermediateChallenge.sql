@@ -16,14 +16,22 @@
 -- 1. Which region has the lowest proportion of sales reps to accounts?
 
 SELECT 
-  r.name as region_name, COUNT(s.id) as no_of_reps
-FROM 
-  sqlchallenge1.sales_reps as s
-JOIN 
-  sqlchallenge1.region as r
-ON r.id = s.region_id 
+  r.name,
+  COUNT(DISTINCT s.id) AS no_of_sr,
+  COUNT(a.id) AS no_of_ac,
+  COUNT(DISTINCT s.id)::FLOAT/COUNT(DISTINCT a.id)::FLOAT AS ratio
+FROM
+  sqlchallenge1.region AS r
+LEFT JOIN
+  sqlchallenge1.sales_reps AS s
+ON
+  r.id=s.region_id 
+LEFT JOIN
+  sqlchallenge1.accounts AS a
+ON
+  s.id=a.sales_rep_id
 GROUP BY r.name 
-ORDER BY no_of_reps DESC;
+ORDER BY ratio DESC;
 
 
 
@@ -54,35 +62,40 @@ ORDER BY total_qty DESC;
 
 
 SELECT 
-    DISTINCT a.name as account_name,
-    SUM(o.poster_qty) as poster_purchase
+  a.name as account_name,
+  SUM(o.poster_qty) as poster_purch
 FROM 
-    sqlchallenge1.orders as o
-JOIN sqlchallenge1.accounts as a
-ON a.id = o.account_id
-JOIN sqlchallenge1.sales_reps as s
-ON s.id = a.sales_rep_id
-JOIN sqlchallenge1.region as r
-ON r.id = s.region_id 
-WHERE
-  r.id = 1
-GROUP BY a.name  
-HAVING SUM(o.poster_qty) <= 0; 
+  sqlchallenge1.accounts as a
+JOIN sqlchallenge1.orders as o
+ON a.id = o.account_id 
+AND a.name IN (
+    SELECT a.name
+    FROM 
+      sqlchallenge1.accounts as a
+    JOIN sqlchallenge1.sales_reps as s
+    ON a.sales_rep_id =s.id 
+    AND s.region_id = 1)
+GROUP BY account_name
+HAVING SUM(o.poster_qty) = 0;
   
 
 
 -- 4. How many accounts have never ordered poster?
 
 
-SELECT 
-  DISTINCT a.name as account_name,
-  COUNT(a.name) as poster_purchase
+SELECT
+  a.name as account_name,
+  a.id,
+    CASE 
+    WHEN SUM(o.poster_qty) > 0 THEN 'Has Bought'
+    ELSE 'Never Bought' 
+  END as poster_purchase
 FROM 
-    sqlchallenge1.orders as o
+  sqlchallenge1.orders as o
 JOIN sqlchallenge1.accounts as a
 ON a.id = o.account_id
-GROUP BY a.name  
-HAVING SUM(o.poster_qty) = 0;
+GROUP BY a.name, a.id
+ORDER BY poster_purchase DESC;
 
 
 
