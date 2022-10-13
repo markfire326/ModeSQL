@@ -1,5 +1,3 @@
--- Link to the tables: https://app.mode.com/sqlchallenge1/tables
-
 -- Returns first 100 rows from sqlchallenge1.accounts
   SELECT * FROM sqlchallenge1.accounts;
   
