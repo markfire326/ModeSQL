@@ -5,16 +5,11 @@
   SELECT * FROM sqlchallenge1.orders LIMIT 100;
 
 -- Returns first 100 rows from sqlchallenge1.sales_reps
-  SELECT 
-		id,
-		name,
-		region_id
+  SELECT *
  FROM sqlchallenge1.sales_reps LIMIT 100;
 
 -- Returns first 100 rows from sqlchallenge1.region
-  SELECT 
-		id,
-		name
+  SELECT *
  FROM sqlchallenge1.region LIMIT 100;
  
  
