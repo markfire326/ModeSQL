@@ -100,7 +100,9 @@ ORDER BY poster_purchase DESC;
 -- 5. What is the most common firstname for account primary pocs?
 
 
-SELECT DISTINCT primary_poc as pocname, COUNT(primary_poc)
+SELECT
+    SUBSTR(primary_poc,1, POSITION(' ' IN primary_poc)) as firstname,
+    COUNT(id) as count
 FROM sqlchallenge1.accounts
-GROUP BY pocname
-ORDER BY 2 DESC
+GROUP BY 1
+ORDER BY 2 DESC;
